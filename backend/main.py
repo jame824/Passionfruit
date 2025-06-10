@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from env import DB_PASS, DB_NAME, DB_HOST, DB_PORT, DB_USER
 import datetime
 import psycopg2
+
 
 # dont hardcode the sql
 
@@ -27,11 +29,11 @@ def read_item(user: str,):
 def get_post(postId: int):
     try: 
         conn = psycopg2.connect(
-            database="test", 
-            user="postgres", 
-            host='localhost',
-            password="postgres",
-            port=5432
+            database=DB_NAME, 
+            user=DB_USER,
+            host=DB_HOST,
+            password=DB_PASS,
+            port=DB_PORT
         )
         
         cur = conn.cursor()
@@ -63,11 +65,13 @@ def get_post(postId: int):
 @app.post("/init")
 def init_db():
     try:
-        conn = psycopg2.connect(database = "test", 
-                        user = "postgres", 
-                        host= 'localhost',
-                        password = "postgres",
-                        port = 5432)
+        conn = psycopg2.connect(
+            database=DB_NAME, 
+            user=DB_USER,
+            host=DB_HOST,
+            password=DB_PASS,
+            port=DB_PORT
+        )
         
         cur = conn.cursor()
         sql = """
@@ -93,11 +97,13 @@ def init_db():
 def create_post(post: Post):
     print(post)
     try:
-        conn = psycopg2.connect(database = "test", 
-                        user = "postgres", 
-                        host= 'localhost',
-                        password = "postgres",
-                        port = 5432)
+        conn = psycopg2.connect(
+            database=DB_NAME, 
+            user=DB_USER,
+            host=DB_HOST,
+            password=DB_PASS,
+            port=DB_PORT
+        )
         
         cur = conn.cursor()
         now = datetime.datetime.now()
@@ -117,12 +123,13 @@ def create_post(post: Post):
 @app.delete("/deletepost")
 def delete_post(post: Post):
     try:
-        conn = psycopg2.connect(database = "test", 
-                        user = "postgres", 
-                        host= 'localhost',
-                        password = "postgres",
-                        port = 5432)
-        
+        conn = psycopg2.connect(
+            database=DB_NAME, 
+            user=DB_USER,
+            host=DB_HOST,
+            password=DB_PASS,
+            port=DB_PORT
+        )
         cur = conn.cursor()
 
         postId = post.postId
